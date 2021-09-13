@@ -2,13 +2,14 @@ import turtle
 
 class Board:
 	
-	def __init__(self, cols=5, rows=5, pos=(0,0), rect_size=50, color=(0, 0, 0)):
+	def __init__(self, cols=5, rows=5, pos=(0,0), rect_size=50, color=(0, 0, 0), background_color=(255, 255, 255)):
 		"""
 		cols: total column of board.
 		rows: total row of board.
 		pos: (x, y) position for board center.
 		rect_size: size every rect, both width and height.
-		color: color of line board, can be color hex string, color name, or (r, g, b).
+		color: color of board's line, can be color hex string, color name, or rgb color.
+		background_color: background of the board, can be color hex string, color name, or rgb color.
 		"""
 		if cols < 1 or rows < 1:
 			raise ValueError("Cols and rows must be higher than 0!")
@@ -20,6 +21,7 @@ class Board:
 		self.__pos = pos
 		self.__rect_size = rect_size
 		self.__color = color
+		self.__background_color = background_color
 		self.__isdrawed = False
 		self.__pen.pencolor(color)
 
@@ -43,11 +45,14 @@ class Board:
 		self.__pen.down()
 		
 		#Draw outer line
+		self.__pen.color(self.__color, self.__background_color)
+		self.__pen.begin_fill()
 		for _ in range(0, 2):
 			self.__pen.forward(width)
 			self.__pen.left(90)
 			self.__pen.forward(height)
 			self.__pen.left(90)
+		self.__pen.end_fill()
 		
 		#Draw inner line
 		self.__pen.left(90)
@@ -76,7 +81,7 @@ class Board:
 		------
 		col: column position to paint.
 		row: row position to paint.
-		color: color used to fill, can be color name, (r, g, b) or hex string.
+		color: color used to fill rect, can be can be color hex string, color name, or rgb color.
 		------
 		Column and row have first index (1, 1) at top-left board.
 		To make a horizontal line, you can use loop to increase col argument.
